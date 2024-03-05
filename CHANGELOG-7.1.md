@@ -19,6 +19,7 @@
 - `TemplateFileResolverInterface` is redundant and will be  removed in the next major version,
 template extension resolving is already performed in `TemplateRenderer`
 - Smarty template engine support
+- Filesystem module cache will be moved to module cache
 
 ### Fixed
 - Wrong property "_oUserData" used in ContactController [PR-918](https://github.com/OXID-eSales/oxideshop_ce/pull/918)
