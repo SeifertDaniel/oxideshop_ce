@@ -29,6 +29,11 @@ interface ContextInterface extends BasicContextInterface
     public function getRequiredContactFormFields(): array;
 
     /**
+     * @return int
+     */
+    public function getCurrentShopId(): int;
+
+    /**
      * @return bool
      */
     public function isEnabledAdminQueryLog(): bool;

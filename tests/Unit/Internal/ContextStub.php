@@ -44,6 +44,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->skipLogTags = $context->getSkipLogTags();
         $this->demoMode = $context->isShopInDemoMode();
         $this->productiveMode = $context->isShopInProductiveMode();
+        $this->currentShopId = $context->getCurrentShopId();
     }
 
     /**
@@ -217,5 +218,16 @@ class ContextStub extends BasicContextStub implements ContextInterface
     public function setShopInDemoMode(bool $demoMode)
     {
         $this->demoMode = $demoMode;
+    }
+
+
+    public function getCurrentShopId(): int
+    {
+        return $this->currentShopId;
+    }
+
+    public function setCurrentShopId(int $shopId): void
+    {
+        $this->currentShopId = $shopId;
     }
 }

@@ -117,14 +117,6 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
-     * @return int
-     */
-    public function getCurrentShopId(): int
-    {
-        return $this->getDefaultShopId();
-    }
-
-    /**
      * @return array
      */
     public function getAllShopIds(): array
