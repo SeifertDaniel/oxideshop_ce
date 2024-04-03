@@ -15,10 +15,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheService
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[Group('cache')]
 class ClearCacheCommandTest extends TestCase
 {
     public function testClearCacheTriggersRegularAndTemplatesCleaners(): void

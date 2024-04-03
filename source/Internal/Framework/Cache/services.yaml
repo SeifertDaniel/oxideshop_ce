@@ -5,11 +5,13 @@ services:
   Psr\Cache\CacheItemPoolInterface:
     class: Symfony\Component\Cache\Adapter\FilesystemAdapter
     arguments:
+      $namespace: '%oxid_current_shop_pool%'
       $directory: '%oxid_cache_directory%'
 
   Symfony\Contracts\Cache\CacheInterface:
     class: Symfony\Component\Cache\Adapter\FilesystemAdapter
     arguments:
+      $namespace: '%oxid_current_shop_pool%'
       $directory: '%oxid_cache_directory%'
 
 imports:

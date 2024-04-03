@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ShopPoolName;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
@@ -92,11 +93,28 @@ class ContainerBuilderTest extends TestCase
         );
     }
 
-    public function testCacheDirectoryParameterIsAvailable(): void
+    public function testCacheDirectoryParameterIsSet(): void
     {
-        $container = $this->makeContainer($this->makeContextStub());
+        $context = $this->makeContextStub();
+        $context->setCacheDirectory('cache');
+        $container = $this->makeContainer($context);
 
-        $this->assertTrue($container->hasParameter('oxid_cache_directory'), 'The oxid_cache_directory parameter does not exist.');
+        $this->assertSame(
+            $context->getCacheDirectory(),
+            $container->getParameter('oxid_cache_directory')
+        );
+    }
+
+    public function testCachePoolParameterIsSet(): void
+    {
+        $context = $this->makeContextStub();
+        $context->setCurrentShopId(1234567890);
+        $container = $this->makeContainer($context);
+
+        $this->assertSame(
+            ShopPoolName::get($context->getCurrentShopId()),
+            $container->getParameter('oxid_current_shop_pool')
+        );
     }
 
     private function makeContainer(ContextInterface $context): Container
