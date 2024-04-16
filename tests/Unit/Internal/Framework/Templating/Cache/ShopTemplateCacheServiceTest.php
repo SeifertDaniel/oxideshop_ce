@@ -15,27 +15,25 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ShopTemplateCacheServiceTest extends TestCase
+final class ShopTemplateCacheServiceTest extends TestCase
 {
     private string $cacheDirectory = '/path/to/cache';
-    private ContextInterface $contextMock;
-    private Filesystem $fileSystemMock;
     private ShopTemplateCacheServiceInterface $shopTemplateCacheService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->contextMock = $this->getMockBuilder(ContextInterface::class)->getMock();
-        $this->fileSystemMock = $this->getMockBuilder(Filesystem::class)->getMock();
+        $contextMock = $this->getMockBuilder(ContextInterface::class)->getMock();
+        $fileSystemMock = $this->getMockBuilder(Filesystem::class)->getMock();
 
-        $this->contextMock->expects($this->any())
+        $contextMock
             ->method('getCacheDirectory')
             ->willReturn($this->cacheDirectory);
 
-        $this->shopTemplateCacheService = new ShopTemplateCacheService($this->contextMock, $this->fileSystemMock);
+        $this->shopTemplateCacheService = new ShopTemplateCacheService($contextMock, $fileSystemMock);
     }
-    public function testGetCacheDirectory()
+    public function testGetCacheDirectory(): void
     {
         $shopId = 123;
 
