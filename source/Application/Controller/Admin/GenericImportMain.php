@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Admin general export manager.

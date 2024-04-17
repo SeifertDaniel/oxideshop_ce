@@ -10,9 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Command;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 final class ThemeActivateCommandTest extends IntegrationTestCase
@@ -24,10 +27,12 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
     private string $themeId = 'testTheme';
     private array $originalConfig;
 
+    private ContainerInterface $originalContainer;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->saveOriginalConfig();
+        $this->saveOriginalContainer();
         $this->setShopFixtures();
     }
 
@@ -93,22 +98,29 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
     private function setShopFixtures(): void
     {
         Registry::getConfig()->reinitialize();
-        Registry::getConfig()->setConfigParam('sShopDir', "$this->fixtureDirectory/shop/source/");
         Registry::getConfig()->setConfigParam('sTheme', 'absolute-dummy-value');
+
+        $this->container = (new TestContainerFactory())->create();
+        $this->container->setParameter('oxid_shop_directory', "$this->fixtureDirectory/shop/source/");
+        $this->container->compile();
+
+        ContainerFactory::getInstance()->setContainer($this->container);
     }
 
-    private function saveOriginalConfig(): void
+    private function saveOriginalContainer(): void
     {
         $this->originalConfig = [
-            'sShopDir' => Registry::getConfig()->getConfigParam('sShopDir'),
             'sTheme' => Registry::getConfig()->getConfigParam('sTheme')
         ];
+
+        $this->originalContainer = ContainerFactory::getInstance()->getContainer();
     }
 
     private function restoreOriginalConfig(): void
     {
         Registry::getConfig()->reinitialize();
-        Registry::getConfig()->setConfigParam('sShopDir', $this->originalConfig['sShopDir']);
         Registry::getConfig()->setConfigParam('sTheme', $this->originalConfig['sTheme']);
+
+        ContainerFactory::getInstance()->setContainer($this->originalContainer);
     }
 }

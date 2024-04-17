@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\Facts\Config\ConfigFile;
 use OxidEsales\Facts\Edition\EditionSelector;

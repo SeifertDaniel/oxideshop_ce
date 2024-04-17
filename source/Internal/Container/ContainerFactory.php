@@ -41,6 +41,11 @@ class ContainerFactory
         return $this->symfonyContainer;
     }
 
+    public function setContainer(ContainerInterface $symfonyContainer): void
+    {
+        $this->symfonyContainer = $symfonyContainer;
+    }
+
     /**
      * Loads container from cache if available, otherwise
      * create the container from scratch.

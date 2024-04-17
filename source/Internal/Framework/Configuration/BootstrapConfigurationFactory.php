@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Configuration\Dao\SystemConfigu
 use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\SystemConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
+use Symfony\Component\Filesystem\Path;
 
 class BootstrapConfigurationFactory
 {
@@ -26,6 +27,11 @@ class BootstrapConfigurationFactory
     private function initEnvironment(): void
     {
         $projectRootDirectory = (new BootstrapLocator())->getProjectRoot();
-        (new DotenvLoader($projectRootDirectory))->loadEnvironmentVariables();
+        $dotenvLoader = new DotenvLoader($projectRootDirectory);
+        $dotenvLoader->loadEnvironmentVariables();
+        $dotenvLoader->putEnvironmentVariable(
+            'OXID_SHOP_DIRECTORY',
+            Path::join($projectRootDirectory, 'source')
+        );
     }
 }

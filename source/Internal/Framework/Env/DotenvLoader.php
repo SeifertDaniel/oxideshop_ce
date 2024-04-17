@@ -17,18 +17,24 @@ class DotenvLoader implements DotenvLoaderInterface
     private string $envKey = 'OXID_ENV';
     private string $debugKey = 'OXID_DEBUG';
     private string $envFile = '.env';
+    /**
+     * @var \Symfony\Component\Dotenv\Dotenv
+     */
+    private Dotenv $dotEnv;
 
     public function __construct(private readonly string $pathToEnvFiles)
     {
+        $this->dotEnv = new Dotenv($this->envKey, $this->debugKey);
+        $this->dotEnv->usePutenv();
     }
 
     public function loadEnvironmentVariables(): void
     {
-        $dotEnv = new Dotenv($this->envKey, $this->debugKey);
-        $dotEnv
-            ->usePutenv()
-            ->loadEnv(
-                Path::join($this->pathToEnvFiles, $this->envFile)
-            );
+        $this->dotEnv->loadEnv(Path::join($this->pathToEnvFiles, $this->envFile));
+    }
+
+    public function putEnvironmentVariable(string $name, $value): void
+    {
+        $this->dotEnv->populate([$name => $value]);
     }
 }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,6 +20,7 @@ class FilesystemContainerCache implements ContainerCacheInterface
 {
     public function __construct(private BasicContextInterface $context, private Filesystem $filesystem)
     {
+        (new BootstrapConfigurationFactory())->create();
     }
 
     public function put(ContainerBuilder $container, int $shopId): void

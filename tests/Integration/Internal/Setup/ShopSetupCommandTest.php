@@ -296,8 +296,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
             ->shouldHaveBeenCalledOnce();
         $this->configFileDao->replacePlaceholder('sShopURL', self::URL)
             ->shouldHaveBeenCalledOnce();
-        $this->configFileDao->replacePlaceholder('sShopDir', self::DIR)
-            ->shouldHaveBeenCalledOnce();
         $this->configFileDao->replacePlaceholder('sCompileDir', self::TMP_DIR)
             ->shouldHaveBeenCalledOnce();
         $this->directoryValidator->validateDirectory(self::DIR, self::TMP_DIR)

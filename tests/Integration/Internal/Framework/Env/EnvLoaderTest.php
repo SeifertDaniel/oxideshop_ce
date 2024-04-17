@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Env;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\EnvTrait;
 use OxidEsales\EshopCommunity\Tests\RequestTrait;
@@ -79,5 +80,16 @@ final class EnvLoaderTest extends TestCase
         $containerParameter = $this->getParameter($this->serializedParameterKey);
 
         $this->assertEquals($dsnString, $containerParameter[2]);
+    }
+
+    public function testCanPutEnvironmentVariable(): void
+    {
+        $someKey = uniqid('some-key', true);
+        $someValue = uniqid('some-value', true);
+
+        $dotEnvLoader = new DotenvLoader($this->fixtures);
+        $dotEnvLoader->putEnvironmentVariable($someKey, $someValue);
+
+        $this->assertEquals($someValue, getenv($someKey));
     }
 }

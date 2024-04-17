@@ -167,7 +167,6 @@ class ShopSetupCommand extends Command
     private function updateConfigFile(InputInterface $input): void
     {
         $this->configFileDao->replacePlaceholder('sShopURL', $input->getOption(self::SHOP_URL));
-        $this->configFileDao->replacePlaceholder('sShopDir', $input->getOption(self::SHOP_DIRECTORY));
         $this->configFileDao->replacePlaceholder('sCompileDir', $input->getOption(self::COMPILE_DIRECTORY));
     }
 

@@ -1,5 +1,9 @@
 imports:
     - { resource: bootstrap-services.yaml }
+
+parameters:
+    oxid_shop_directory: '%env(OXID_SHOP_DIRECTORY)%'
+
 services:
     _defaults:
         autowire: true

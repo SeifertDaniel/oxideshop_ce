@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
 use stdClass;
 use OxidEsales\Eshop\Core\Registry;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * General utils class

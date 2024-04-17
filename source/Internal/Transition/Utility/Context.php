@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\BootstrapConnectionFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
 use OxidEsales\Facts\Config\ConfigFile as FactsConfigFile;
@@ -41,7 +42,7 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getLogFilePath(): string
     {
-        return Path::join($this->getFactsConfigFile()->getVar('sShopDir'), 'log', 'oxideshop.log');
+        return Path::join(ContainerFacade::getParameter('oxid_shop_directory'), 'log', 'oxideshop.log');
     }
 
     /**

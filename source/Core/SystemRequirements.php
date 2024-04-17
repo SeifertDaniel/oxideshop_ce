@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecurityChecker;
 
 /**

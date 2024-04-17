@@ -20,7 +20,6 @@ class ConfigFileDao implements ConfigFileDaoInterface
         'dbUser',
         'dbPwd',
         'sShopURL',
-        'sShopDir',
         'sCompileDir',
     ];
 
