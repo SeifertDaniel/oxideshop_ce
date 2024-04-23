@@ -9,9 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Command;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ShopPoolServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,8 +26,9 @@ class ThemeActivateCommand extends Command
 
     public function __construct(
         private readonly ShopAdapterInterface $shopAdapter,
-        private readonly TemplateCacheServiceInterface $templateCacheService,
-        private readonly ModuleCacheServiceInterface $moduleCacheService
+        private readonly ShopTemplateCacheServiceInterface $shopTemplateCacheService,
+        private readonly ShopPoolServiceInterface $shopPoolService,
+        private readonly BasicContextInterface $context
     ) {
         parent::__construct();
     }
@@ -57,8 +59,8 @@ class ThemeActivateCommand extends Command
         }
 
         $this->shopAdapter->activateTheme($themeId);
-        $this->moduleCacheService->invalidateAll();
-        $this->templateCacheService->invalidateTemplateCache();
+        $this->shopPoolService->invalidate($this->context->getCurrentShopId());
+        $this->shopTemplateCacheService->invalidateAllShopsCache();
         $output->writeLn('<info>' . sprintf(self::MESSAGE_THEME_ACTIVATED, $themeId) . '</info>');
 
         return Command::SUCCESS;

@@ -23,49 +23,33 @@ final class ModuleCacheTest extends TestCase
     public function testPut(): void
     {
         $cache = $this->getModuleCacheService();
-        $cache->put('test', 1, ['something']);
+        $cache->put('test', ['something']);
 
         $this->assertEquals(
             ['something'],
-            $cache->get('test', 1)
+            $cache->get('test')
         );
     }
 
     public function testExists(): void
     {
         $cache = $this->getModuleCacheService();
-        $cache->put('test', 1, ['something']);
+        $cache->put('test', ['something']);
 
         $this->assertTrue(
-            $cache->exists('test', 1)
+            $cache->exists('test')
         );
     }
 
     public function testInvalidate(): void
     {
         $cache = $this->getModuleCacheService();
-        $cache->put('test', 1, ['something']);
+        $cache->put('test_key', ['something']);
 
-        $cache->invalidate('someModule', 1);
-
-        $this->assertFalse(
-            $cache->exists('test', 1)
-        );
-    }
-
-    public function testInvalidateAll(): void
-    {
-        $cache = $this->getModuleCacheService();
-        $cache->put('test', 1, ['something']);
-        $cache->put('test2', 2, ['something']);
-
-        $cache->invalidateAll();
+        $cache->invalidate('test_key');
 
         $this->assertFalse(
-            $cache->exists('test', 1)
-        );
-        $this->assertFalse(
-            $cache->exists('test2', 2)
+            $cache->exists('test_key')
         );
     }
 
@@ -74,7 +58,7 @@ final class ModuleCacheTest extends TestCase
         $cache = $this->getModuleCacheService();
 
         $this->expectException(CacheNotFoundException::class);
-        $cache->get('nonExistent', 1);
+        $cache->get('nonExistent');
     }
 
     private function getModuleCacheService(): ModuleCacheServiceInterface

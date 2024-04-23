@@ -16,3 +16,4 @@ services:
 
 imports:
   - { resource: Command/services.yaml }
+  - { resource: Pool/services.yaml }

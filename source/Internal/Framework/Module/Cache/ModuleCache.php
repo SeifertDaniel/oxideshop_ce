@@ -9,35 +9,20 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use Symfony\Contracts\Cache\CacheInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 class ModuleCache implements ModuleCacheServiceInterface
 {
-    public function __construct(
-        private readonly ShopAdapterInterface $shopAdapter,
-        private readonly ShopTemplateCacheServiceInterface $templateCacheService,
-        private readonly CacheInterface $cache
-    ) {
-    }
-
-    public function invalidate(string $moduleId, int $shopId): void
+    public function __construct(private readonly CacheItemPoolInterface $cache)
     {
-        $this->templateCacheService->invalidateCache($shopId);
-        $this->shopAdapter->invalidateModuleCache($moduleId);
-        $this->cache->clear();
     }
 
-    public function invalidateAll(): void
+    public function invalidate(string $key): void
     {
-        $this->templateCacheService->invalidateAllShopsCache();
-        $this->shopAdapter->invalidateModulesCache();
-
-        $this->cache->clear();
+        $this->cache->deleteItem($key);
     }
 
-    public function put(string $key, int $shopId, array $data): void
+    public function put(string $key, array $data): void
     {
         $cacheModulePathItem = $this->cache->getItem($key);
         $cacheModulePathItem->set($data);
@@ -47,20 +32,18 @@ class ModuleCache implements ModuleCacheServiceInterface
     /**
      * @throws CacheNotFoundException
      */
-    public function get(string $key, int $shopId): array
+    public function get(string $key): array
     {
         $cacheModulePathItem = $this->cache->getItem($key);
 
         if (!$cacheModulePathItem->isHit()) {
-            throw new CacheNotFoundException(
-                "Cache with key '$key' for the shop with id $shopId not found."
-            );
+            throw new CacheNotFoundException("Cache with key '$key' not found.");
         }
 
         return $cacheModulePathItem->get();
     }
 
-    public function exists(string $key, int $shopId): bool
+    public function exists(string $key): bool
     {
         return $this->cache->getItem($key)->isHit();
     }

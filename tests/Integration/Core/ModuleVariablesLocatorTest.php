@@ -80,7 +80,6 @@ final class ModuleVariablesLocatorTest extends IntegrationTestCase
             ->get(ModuleCacheServiceInterface::class)
             ->put(
                 $cacheKey,
-                $shopId,
                 $chain
             );
     }

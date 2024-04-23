@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Integration\Internal\Framework\Module\Facade;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
@@ -74,7 +74,7 @@ final class ActiveModulesDataProviderTest extends TestCase
     public function testGetModulePathsUsesCacheIfItExists(): void
     {
         $cache = $this->getDummyCache();
-        $cache->put('absolute_module_paths', 1, ['moduleId' => 'somePath']);
+        $cache->put('absolute_module_paths', ['moduleId' => 'somePath']);
 
         $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
 
@@ -127,7 +127,6 @@ final class ActiveModulesDataProviderTest extends TestCase
         $cache = $this->getDummyCache();
         $cache->put(
             'module_class_extensions',
-            1,
             [
                 'shopClassCache'        => ['moduleExtensionClassName1'],
                 'anotherShopClassCache' => ['moduleExtensionClassName2'],
@@ -209,7 +208,7 @@ final class ActiveModulesDataProviderTest extends TestCase
         return new class implements ModuleCacheServiceInterface {
             private array $cache;
 
-            public function invalidate(string $moduleId, int $shopId): void
+            public function invalidate(string $key): void
             {
             }
 
@@ -217,19 +216,19 @@ final class ActiveModulesDataProviderTest extends TestCase
             {
             }
 
-            public function put(string $key, int $shopId, array $data): void
+            public function put(string $key, array $data): void
             {
-                $this->cache[$shopId][$key] = $data;
+                $this->cache[$key] = $data;
             }
 
-            public function get(string $key, int $shopId): array
+            public function get(string $key): array
             {
-                return $this->cache[$shopId][$key];
+                return $this->cache[$key];
             }
 
-            public function exists(string $key, int $shopId): bool
+            public function exists(string $key): bool
             {
-                return isset($this->cache[$shopId][$key]);
+                return isset($this->cache[$key]);
             }
         };
     }

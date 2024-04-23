@@ -20,10 +20,10 @@ use Symfony\Component\String\UnicodeString;
 class ModuleSettingService implements ModuleSettingServiceInterface
 {
     public function __construct(
-        private ContextInterface $context,
-        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        private ModuleCacheServiceInterface $moduleCacheService,
-        private EventDispatcherInterface $eventDispatcher
+        private readonly ContextInterface $context,
+        private readonly ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private readonly ModuleCacheServiceInterface $moduleCacheService,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -92,8 +92,6 @@ class ModuleSettingService implements ModuleSettingServiceInterface
     {
         $shopId = $this->context->getCurrentShopId();
 
-        $this->moduleCacheService->invalidate($moduleId, $shopId);
-
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
         $setting = $moduleConfiguration->getModuleSetting($name);
         $setting->setValue($value);
@@ -110,7 +108,6 @@ class ModuleSettingService implements ModuleSettingServiceInterface
         if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
             $this->moduleCacheService->put(
                 $cacheKey,
-                $shopId,
                 ['value' => $this->moduleConfigurationDao->get($moduleId, $shopId)->getModuleSetting($name)->getValue()]
             );
         }

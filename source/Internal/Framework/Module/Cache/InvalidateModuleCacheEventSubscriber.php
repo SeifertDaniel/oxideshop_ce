@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ShopPoolServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Event\ModuleConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent;
@@ -17,14 +18,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InvalidateModuleCacheEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private ModuleCacheServiceInterface $moduleCacheService)
+    public function __construct(private readonly ShopPoolServiceInterface $shopPoolService)
     {
     }
 
-    public function invalidateModuleCache(
-        ModuleSetupEvent|ModuleConfigurationChangedEvent $event
-    ): void {
-        $this->moduleCacheService->invalidate($event->getModuleId(), $event->getShopId());
+    public function invalidateModuleCache(ModuleSetupEvent|ModuleConfigurationChangedEvent $event): void
+    {
+        $this->shopPoolService->invalidate($event->getShopId());
     }
 
     public static function getSubscribedEvents(): array
