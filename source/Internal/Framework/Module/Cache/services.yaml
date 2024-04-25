@@ -6,10 +6,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCache
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceBridgeInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheBridge
-    public: true
-
   oxid_esales.module.cache.invalidate_module_cache_event_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\InvalidateModuleCacheEventSubscriber
     tags:
