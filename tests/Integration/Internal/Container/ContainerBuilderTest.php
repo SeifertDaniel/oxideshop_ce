@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ShopPoolName;
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ShopPoolNameFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
@@ -112,7 +112,7 @@ class ContainerBuilderTest extends TestCase
         $container = $this->makeContainer($context);
 
         $this->assertSame(
-            ShopPoolName::get($context->getCurrentShopId()),
+            ShopPoolNameFactory::get($context->getCurrentShopId()),
             $container->getParameter('oxid_current_shop_pool')
         );
     }

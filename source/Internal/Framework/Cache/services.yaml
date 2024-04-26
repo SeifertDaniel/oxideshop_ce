@@ -3,13 +3,13 @@ services:
     autowire: true
 
   Psr\Cache\CacheItemPoolInterface:
-    class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+    factory: ['OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ItemPoolFactory', 'create']
     arguments:
       $namespace: '%oxid_current_shop_pool%'
       $directory: '%oxid_cache_directory%'
 
   Symfony\Contracts\Cache\CacheInterface:
-    class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+    factory: ['OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ItemPoolFactory', 'create']
     arguments:
       $namespace: '%oxid_current_shop_pool%'
       $directory: '%oxid_cache_directory%'

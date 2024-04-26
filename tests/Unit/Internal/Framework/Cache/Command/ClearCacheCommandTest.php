@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Cache\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\Command\ClearCacheCommand;
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ShopPoolFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ShopPoolServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface;
@@ -37,6 +38,9 @@ class ClearCacheCommandTest extends TestCase
         $shopPoolServiceMock = $this->createMock(ShopPoolServiceInterface::class);
         $shopPoolServiceMock->expects($this->once())->method('invalidate');
 
+        $shopPoolFactoryCacheMock = $this->createMock(ShopPoolFactoryInterface ::class);
+        $shopPoolFactoryCacheMock->method('create')->willReturn($shopPoolServiceMock);
+
         $contextMock = $this->createMock(ContextInterface::class);
         $contextMock->expects($this->once())->method('getAllShopIds')->willReturn([1]);
 
@@ -44,8 +48,8 @@ class ClearCacheCommandTest extends TestCase
             $shopAdapterMock,
             $shopTemplateCacheServiceMock,
             $containerCacheMock,
-            $shopPoolServiceMock,
-            $contextMock
+            $contextMock,
+            $shopPoolFactoryCacheMock
         );
 
         $command->run(

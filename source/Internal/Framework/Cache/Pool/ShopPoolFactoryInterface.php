@@ -7,7 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool;
 
-interface ShopPoolServiceInterface
+use Psr\Cache\CacheItemPoolInterface;
+
+interface ShopPoolFactoryInterface
 {
-    public function invalidate(int $shopId);
+    public function create(CacheItemPoolInterface $cacheItemPool): ShopPoolServiceInterface;
 }

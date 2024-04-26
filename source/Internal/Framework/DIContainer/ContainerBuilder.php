@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ShopPoolName;
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\ShopPoolNameFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
@@ -40,7 +40,10 @@ class ContainerBuilder
         $symfonyContainer->addCompilerPass(new RegisterListenersPass());
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
         $symfonyContainer->setParameter('oxid_cache_directory', $this->context->getCacheDirectory());
-        $symfonyContainer->setParameter('oxid_current_shop_pool', ShopPoolName::get($this->context->getCurrentShopId()));
+        $symfonyContainer->setParameter(
+            'oxid_current_shop_pool',
+            ShopPoolNameFactory::get($this->context->getCurrentShopId())
+        );
 
         $this->loadEditionServices($symfonyContainer);
         $this->loadModuleServices($symfonyContainer);

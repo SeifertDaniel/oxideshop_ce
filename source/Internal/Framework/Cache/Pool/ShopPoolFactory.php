@@ -13,19 +13,16 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCa
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
-class ShopPoolService implements ShopPoolServiceInterface
+class ShopPoolFactory implements ShopPoolFactoryInterface
 {
     public function __construct(
-        private readonly CacheItemPoolInterface $cacheItemPool,
         private readonly ShopAdapterInterface $shopAdapter,
         private readonly ShopTemplateCacheServiceInterface $templateCacheService
     ) {
     }
 
-    public function invalidate(int $shopId): void
+    public function create(CacheItemPoolInterface $cacheItemPool): ShopPoolServiceInterface
     {
-        $this->templateCacheService->invalidateCache($shopId);
-        $this->shopAdapter->invalidateModulesCache();
-        $this->cacheItemPool->clear();
+        return new ShopPoolService($cacheItemPool, $this->shopAdapter, $this->templateCacheService);
     }
 }
